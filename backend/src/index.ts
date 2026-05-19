@@ -27,8 +27,58 @@ const app = express()
 app.disable('x-powered-by')
 app.use(express.json({ limit: '1mb' }))
 
+type Operator = '+' | '-' | '*' | '/'
+
 app.get('/api/hello', (_req, res) => {
   json(res, { ok: true, message: 'Hello from an Express API!', now: new Date().toISOString() })
+})
+
+app.post('/api/echo', (req, res) => {
+  json(res, {
+    ok: true,
+    youSent: req.body ?? null,
+    requestId: req.header('x-request-id') ?? null,
+  })
+})
+
+app.post('/api/calc', (req, res) => {
+  const body: unknown = req.body
+  if (!isRecord(body)) return badRequest(res, 'Body must be an object')
+
+  const isOp = (v: unknown): v is Operator => v === '+' || v === '-' || v === '*' || v === '/'
+  const asNum = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null)
+
+  const { a, b, op } = body as { a?: unknown; b?: unknown; op?: unknown }
+  const aa = asNum(a)
+  const bb = asNum(b)
+  if (aa === null || bb === null || !isOp(op)) {
+    return badRequest(res, 'Invalid payload. Expected { a: number, b: number, op: "+"|"-"|"*"|"/" }')
+  }
+
+  let result: number = NaN
+  switch (op) {
+    case '+':
+      result = aa + bb
+      break
+    case '-':
+      result = aa - bb
+      break
+    case '*':
+      result = aa * bb
+      break
+    case '/':
+      if (bb === 0) return badRequest(res, 'Division by zero')
+      result = aa / bb
+      break
+  }
+
+  if (!Number.isFinite(result)) return badRequest(res, 'Computation error')
+
+  json(res, {
+    ok: true,
+    result,
+    requestId: req.header('x-request-id') ?? null,
+  })
 })
 
 app.get('/api/expenses', async (req, res) => {
