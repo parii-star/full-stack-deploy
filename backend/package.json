@@ -2,16 +2,13 @@
   "name": "full-stack-express-api",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build": "tsc -p tsconfig.json",
-    "prestart": "node dist/scripts/migrate.js",
-    "start": "node dist/index.js",
-    "db:migrate": "node dist/scripts/migrate.js"
-  },
+"scripts": {
+  "start": "node server.js"
+},
   "dependencies": {
-    "express": "^4.21.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
     "pg": "^8.13.1"
   },
   "devDependencies": {
@@ -20,5 +17,11 @@
     "@types/pg": "^8.20.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
-  }
+  },
+  "description": "This folder provides an Express.js + Postgres backend that exposes the same API as the Cloudflare Worker, and can serve the built frontend from `web/dist`.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
