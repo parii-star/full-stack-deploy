@@ -99,6 +99,23 @@ export default {
     const url = new URL(request.url)
     const method = request.method.toUpperCase()
 
+    // Avoid noisy 500s for missing favicon during local dev or custom hosting.
+    // If the asset exists, serve it; otherwise return 204 (no content).
+    if (url.pathname === '/favicon.ico') {
+      if (env.ASSETS) {
+        try {
+          const res = await env.ASSETS.fetch(request)
+          if (res.status !== 404 && res.status < 500) return res
+        } catch {
+          // fall through
+        }
+      }
+      return new Response(null, {
+        status: 204,
+        headers: { 'cache-control': 'public, max-age=86400' },
+      })
+    }
+
     // Serve API routes
     if (url.pathname.startsWith('/api/')) {
       // fall through to the API router below
