@@ -18,6 +18,17 @@ This repo also includes an Express.js backend in [backend/README.md](backend/REA
 - uses Postgres (better fit for Coolify)
 - can serve the built frontend from `web/dist`
 
+### Troubleshooting (unstyled page / module script error)
+
+If you see an error like:
+
+- `Failed to load module script ... /src/main.ts` (often with MIME type `video/mp2t`)
+
+it means you're serving the **dev** file `web/index.html` from a plain web server.
+That file references TypeScript (`/src/main.ts`) which only works when served by Vite.
+
+Fix: serve the **built** frontend (`web/dist`) or use the repo root `Dockerfile` (recommended for Coolify).
+
 ## Prereqs
 
 - Node.js 18+ (Node 20 recommended)
