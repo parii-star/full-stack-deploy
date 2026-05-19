@@ -34,6 +34,18 @@ npm run dev
 
 Open `http://127.0.0.1:8787`.
 
+## Deploy on Coolify
+
+Recommended approach: use the repo root [Dockerfile](../Dockerfile).
+
+- **Build pack**: Dockerfile
+- **Port**: `8787` (or set `PORT`)
+- **Required env**:
+	- `DATABASE_URL` (Postgres connection string)
+	- `PORT` (optional; defaults to `8787`)
+
+On container start, `npm start` runs migrations automatically via `prestart`.
+
 ## API
 
 - `GET /api/expenses?month=YYYY-MM`
