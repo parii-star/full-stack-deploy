@@ -1,0 +1,16 @@
+name = "full-stack-worker-api"
+main = "src/index.ts"
+compatibility_date = "2026-05-18"
+
+# D1 database (create it in your Cloudflare account, then paste the database_id)
+d1_databases = [
+	{ binding = "DB", database_name = "expense-db", database_id = "2fc6e6c8-98b1-40d4-a05a-b3e4b30f96f2" }
+]
+
+[assets]
+directory = "../web/dist"
+
+# After you attach a custom domain, you can add routes here.
+# routes = [
+#   { pattern = "api.example.com/*", zone_name = "example.com" }
+# ]
