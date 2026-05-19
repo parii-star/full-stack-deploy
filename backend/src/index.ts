@@ -1,13 +1,8 @@
 import 'dotenv/config'
 import express from 'express'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { createDb } from './db.js'
 import { readEnv } from './env.js'
 import { amountToCents, isRecord, monthFromDate, parseMonthOrDefault, todayIsoDate } from './utils.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 function json(res: express.Response, data: unknown, status = 200) {
   res.status(status).type('application/json; charset=utf-8').send(JSON.stringify(data))
@@ -204,15 +199,6 @@ app.delete('/api/expenses/:id', async (req, res) => {
   } catch (err) {
     json(res, { ok: false, error: String(err) }, 500)
   }
-})
-
-// Serve built frontend (SPA)
-const webDistDir = path.resolve(__dirname, '..', env.webDistDir)
-app.use(express.static(webDistDir))
-
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api/')) return notFound(res)
-  res.sendFile(path.join(webDistDir, 'index.html'))
 })
 
 app.listen(env.port, () => {

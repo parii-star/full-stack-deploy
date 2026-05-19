@@ -13,7 +13,9 @@ async function main() {
   const db = createDb(env.databaseUrl)
 
   try {
-    const migrationsDir = path.resolve(__dirname, '..', 'migrations')
+    // When compiled, this script runs from `dist/scripts`, but migrations live in `migrations/`
+    // next to `src/` at the backend project root.
+    const migrationsDir = path.resolve(__dirname, '..', '..', 'migrations')
     const entries = await fs.readdir(migrationsDir)
     const sqlFiles = entries.filter((f) => f.endsWith('.sql')).sort()
 

@@ -1,6 +1,6 @@
-# Express backend (replacement for Worker)
+# Express backend (REST API)
 
-This folder provides an Express.js + Postgres backend that exposes the same API as the Cloudflare Worker, and can serve the built frontend from `web/dist`.
+This folder provides an Express.js + Postgres backend that exposes a REST API under `/api/...`.
 
 ## Prereqs
 
@@ -13,18 +13,10 @@ Copy `.env.example` to `.env` and set `DATABASE_URL`.
 
 ## Run locally
 
-From repo root, build the frontend once:
+Run backend:
 
 ```bash
-cd web
-npm install
-npm run build
-```
-
-Then run backend:
-
-```bash
-cd ../backend
+cd backend
 npm install
 cp .env.example .env
 # edit DATABASE_URL
@@ -32,17 +24,11 @@ npm run db:migrate
 npm run dev
 ```
 
-Open `http://127.0.0.1:8787`.
+Open `http://127.0.0.1:3000/api/hello`.
 
 ## Deploy on Coolify
 
-Recommended approach: use the repo root [Dockerfile](../Dockerfile).
-
-- **Build pack**: Dockerfile
-- **Port**: `8787` (or set `PORT`)
-- **Required env**:
-	- `DATABASE_URL` (Postgres connection string)
-	- `PORT` (optional; defaults to `8787`)
+Recommended approach: deploy the repo root [docker-compose.yml](../docker-compose.yml) (Coolify Docker Compose).
 
 On container start, `npm start` runs migrations automatically via `prestart`.
 

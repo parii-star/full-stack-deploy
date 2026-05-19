@@ -6,8 +6,8 @@
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",
-    "prestart": "node dist/scripts/migrate.js",
-    "start": "node dist/index.js",
+    "prestart": "npm run db:migrate",
+    "start": "node dist/src/index.js",
     "db:migrate": "node dist/scripts/migrate.js"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
-  "description": "This folder provides an Express.js + Postgres backend that exposes the same API as the Cloudflare Worker, and can serve the built frontend from `web/dist`.",
+  "description": "Express.js + Postgres backend that exposes a REST API under /api/...",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [],
