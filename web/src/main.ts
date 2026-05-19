@@ -24,12 +24,13 @@ function mustGet<T extends Element>(selector: string): T {
   return el as T
 }
 
-// Only honor VITE_API_BASE during Vite dev.
-// In production (Coolify/Express serving built assets), use same-origin `/api/...`.
-const apiBase = (
-  (import.meta.env.DEV ? (import.meta.env.VITE_API_BASE as string | undefined) : undefined) ??
-  ''
-).replace(/\/$/, '')
+// Use same-origin `/api/...` by default.
+// If you deploy the frontend separately from the API (different origin), set VITE_API_BASE.
+// Safety: ignore localhost/127.0.0.1 in production builds.
+const apiBaseRaw = ((import.meta.env.VITE_API_BASE as string | undefined) ?? '').trim()
+const apiBaseNormalized = apiBaseRaw.replace(/\/$/, '')
+const isLocalhostBase = /^https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?(?:\/|$)/.test(apiBaseNormalized)
+const apiBase = apiBaseNormalized && !(import.meta.env.PROD && isLocalhostBase) ? apiBaseNormalized : ''
 
 function apiUrl(path: string) {
   return apiBase ? `${apiBase}${path}` : path
