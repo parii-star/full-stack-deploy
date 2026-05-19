@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -26,6 +27,26 @@ const db = createDb(env.databaseUrl)
 const app = express()
 app.disable('x-powered-by')
 app.use(express.json({ limit: '1mb' }))
+
+// CORS for browser clients (useful when frontend and backend are on different origins).
+// If CORS_ORIGIN is set, only allow that exact origin; otherwise reflect the request origin or '*'.
+app.use('/api', (req, res, next) => {
+  const requestOrigin = req.header('origin')
+  const allowedOrigin = process.env.CORS_ORIGIN?.trim()
+  const origin = allowedOrigin || requestOrigin || '*'
+
+  res.setHeader('access-control-allow-origin', origin)
+  res.setHeader('vary', 'origin')
+  res.setHeader('access-control-allow-methods', 'GET,POST,DELETE,OPTIONS')
+  res.setHeader('access-control-allow-headers', 'content-type')
+  res.setHeader('access-control-max-age', '86400')
+
+  if (req.method.toUpperCase() === 'OPTIONS') {
+    return res.status(204).end()
+  }
+
+  next()
+})
 
 type Operator = '+' | '-' | '*' | '/'
 

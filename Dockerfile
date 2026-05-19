@@ -7,8 +7,8 @@ WORKDIR /app
 COPY web/package.json web/package-lock.json* web/
 COPY backend/package.json backend/package-lock.json* backend/
 
-RUN npm --prefix web ci
-RUN npm --prefix backend ci
+RUN if [ -f web/package-lock.json ]; then npm --prefix web ci; else npm --prefix web install; fi
+RUN if [ -f backend/package-lock.json ]; then npm --prefix backend ci; else npm --prefix backend install; fi
 
 # Build frontend
 COPY web/ web/
