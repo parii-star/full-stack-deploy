@@ -10,6 +10,14 @@ This repo contains a minimal full-stack example:
 
 The frontend calls the Worker API from the browser to create/list/delete expenses.
 
+## Express backend (Postgres) option
+
+This repo also includes an Express.js backend in [backend/README.md](backend/README.md) that:
+
+- exposes the same `/api/...` endpoints
+- uses Postgres (better fit for Coolify)
+- can serve the built frontend from `web/dist`
+
 ## Prereqs
 
 - Node.js 18+ (Node 20 recommended)
