@@ -30,6 +30,8 @@ npm run dev
 
 This starts the Worker at `http://127.0.0.1:8787`.
 
+If you're accessing it from another device (or via `sslip.io`), use your machine's IP/hostname with port `8787`.
+
 Open `http://localhost:8787`.
 
 ## 2) Deploy (single Worker)

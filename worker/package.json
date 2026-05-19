@@ -5,7 +5,7 @@
   "scripts": {
     "build:web": "npm --prefix ../web run build && rm -rf dist && cp -R ../web/dist dist",
     "predev": "npm run build:web",
-    "dev": "wrangler dev --port 8787",
+    "dev": "wrangler dev --ip 0.0.0.0 --port 8787",
     "deploy": "npm run build:web && wrangler deploy",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
