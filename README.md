@@ -19,6 +19,8 @@ docker compose up --build
 
 Open `http://localhost:8080`.
 
+Note: local port mappings are defined in `docker-compose.override.yml` (auto-loaded by Docker Compose).
+
 ## Deploy to Coolify (Docker Compose)
 
 1) In Coolify, create a **Docker Compose** application.
